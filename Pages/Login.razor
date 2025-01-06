@@ -1,0 +1,57 @@
+@page "/login"
+@inject ILocalStorageService LocalStorage // Inject service vào component
+
+
+@inject JwtAuthService AuthService
+@inject NavigationManager NavigationManager
+@layout HomeLayout
+
+<h3>Login</h3>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <p style="color:red">@errorMessage</p>
+}
+
+<EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Username:</label>
+        <InputText @bind-Value="loginModel.Username" />
+    </div>
+
+    <div>
+        <label>Password:</label>
+        <InputText @bind-Value="loginModel.Password" type="password" />
+    </div>
+
+    <button type="submit">Login</button>
+</EditForm>
+
+@code {
+    private UserModel loginModel = new UserModel();
+    private string errorMessage = string.Empty;
+
+    private async Task HandleLogin()
+    {
+        var users = new List<UserModel>
+{
+new UserModel { Username = "admin", Password = "admin123", Role = "Admin" },
+new UserModel { Username = "user", Password = "user123", Role = "User" }
+};
+
+        var user = users.FirstOrDefault(u => u.Username == loginModel.Username && u.Password == loginModel.Password);
+        if (user != null)
+        {
+            var token = AuthService.GenerateToken(user.Username, user.Role);
+            await LocalStorage.SetItemAsync("token", token);
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            errorMessage = "Invalid username or password.";
+        }
+    }
+}

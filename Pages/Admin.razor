@@ -1,0 +1,57 @@
+@page "/admin"
+@inject AuthenticationStateProvider AuthStateProvider
+@layout HomeLayout
+
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <h3>Chào mừng Admin!</h3>
+    </Authorized>
+    <NotAuthorized>
+        <h3>Bạn không có quyền truy cập.</h3>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@* @page "/admin"
+@attribute [Authorize(Roles = "Admin")]
+@layout HomeLayout
+
+<h3>Admin Page - Chỉ dành cho Admin</h3>
+
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <h3>Chào mừng, Admin!</h3>
+    </Authorized>
+    <NotAuthorized>
+        <h3>Bạn không có quyền truy cập.</h3>
+    </NotAuthorized>
+</AuthorizeView> 
+@page "/admin"
+@inject AuthenticationStateProvider AuthStateProvider
+@layout HomeLayout
+@attribute [Authorize(Roles = "Admin")]
+
+<h3>Kiểm tra trạng thái xác thực</h3>
+
+<ul>
+    @if (authState != null)
+    {
+        @foreach (var claim in authState.User.Claims)
+        {
+            <li>@claim.Type: @claim.Value</li>
+        }
+    }
+    else
+    {
+        <li>Không tìm thấy thông tin xác thực.</li>
+    }
+</ul>
+
+@code {
+    private AuthenticationState authState;
+
+    protected override async Task OnInitializedAsync()
+    {
+        authState = await AuthStateProvider.GetAuthenticationStateAsync();
+    }
+}  *@

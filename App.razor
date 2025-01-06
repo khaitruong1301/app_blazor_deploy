@@ -1,0 +1,14 @@
+﻿<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(Program).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(HomeLayout)" />
+            <NotAuthorized>
+                <p>Bạn không có quyền truy cập trang này.</p>
+                <NavLink href="/login">Đăng nhập</NavLink>
+            </NotAuthorized>
+        </Found>
+        <NotFound>
+            <p>Không tìm thấy trang.</p>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>

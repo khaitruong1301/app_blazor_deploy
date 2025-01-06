@@ -1,0 +1,12 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "MyVerceapp_authenlApp.dll",
+        "use": "@vercel/static-build"
+      }
+    ],
+    "routes": [
+      { "src": "/(.*)", "dest": "app_authen.dll" }
+    ]
+  }

@@ -1,0 +1,62 @@
+@page "/create-product"
+
+@using System.Text.Json;
+@inject HttpClient client
+@inject ProductStoreService prodService;
+<div class="container">
+<h3>Create Product</h3>
+
+<EditForm Model="product" OnValidSubmit="SubmitProduct" >
+    @* <DataAnnotationsValidator />
+    <ValidationSummary /> *@
+
+    <div>
+        <label>Id:</label>
+        <input @bind="product.Id" />
+    </div>
+    <div>
+        <label>Name:</label>
+        <input @bind="product.Name" />
+    </div>
+    <div>
+        <label>Price:</label>
+        <input @bind="product.Price" />
+    </div>
+    <div>
+        <label>Image URL:</label>
+        <input @bind="product.Img" />
+    </div>
+    <div>
+        <label>Description:</label>
+        <input @bind="product.Description" />
+    </div>
+    <div>
+        <label>Type:</label>
+        <input @bind="product.Type" />
+    </div>
+
+
+    <button type="submit">Create</button>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(responseMessage))
+{
+    <p>@responseMessage</p>
+}
+</div>
+@code {
+    private ProductModel product = new ProductModel();
+    private string responseMessage = string.Empty;
+
+    private async Task SubmitProduct()
+    {
+        Console.WriteLine(JsonSerializer.Serialize(product));
+        
+
+        @* string res = await prodService.CreateProduct(product);
+        Console.WriteLine(res); *@
+
+
+
+    }
+}
